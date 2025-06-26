@@ -4,28 +4,31 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class Robot extends TimedRobot {
 
-  SparkMax motor;
-  XboxController controller;
+  VictorSP motorRight1;
+  VictorSP motorRight2;
+  VictorSP motorLeft1;
+  VictorSP motorLeft2;
+  XboxController driverController;
 
   public Robot() {
-    motor = new SparkMax(1, MotorType.kBrushless);
-    controller = new XboxController(0);
+    motorRight1 = new VictorSP(0);
+    motorRight2 = new VictorSP(1);
+    motorLeft1 = new VictorSP(2);
+    motorLeft2 = new VictorSP(3);
+    driverController = new XboxController(0);
   }
 
   @Override
   public void robotPeriodic() {}
 
   @Override
-  public void autonomousInit() {
-  }
+  public void autonomousInit() {}
 
   @Override
   public void autonomousPeriodic() {}
@@ -35,11 +38,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    if(controller.getAButton()){
-      motor.set(-1);
-    } else {
-      motor.set(0);
-    }
+    motorRight2.set(motorRight1.get());
+    motorLeft2.set(motorLeft1.get());
+
+    motorRight1.set(driverController.getLeftY() - driverController.getLeftX());
+    motorLeft1.set(-driverController.getLeftY() - driverController.getLeftX());
   }
 
   @Override
