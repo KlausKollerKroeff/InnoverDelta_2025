@@ -12,11 +12,13 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class Robot extends TimedRobot {
 
-  SparkMax motor;
+  SparkMax motor1;
+  SparkMax motor2;
   XboxController controller;
 
   public Robot() {
-    motor = new SparkMax(1, MotorType.kBrushless);
+    motor1 = new SparkMax(1, MotorType.kBrushless);
+    motor2 = new SparkMax(2, MotorType.kBrushless);
     controller = new XboxController(0);
   }
 
@@ -36,9 +38,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     if(controller.getAButton()){
-      motor.set(-1);
+      motor1.set(-1);
     } else {
-      motor.set(0);
+      motor1.set(0);
+    }
+    
+    if (controller.getBButton()){
+      motor2.set(-1); 
+    } else {
+      motor2.set(0);
     }
   }
 
