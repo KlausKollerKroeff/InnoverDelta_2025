@@ -4,24 +4,43 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 
 public class Robot extends TimedRobot {
-
-  VictorSP motorRight1;
-  VictorSP motorRight2;
-  VictorSP motorLeft1;
-  VictorSP motorLeft2;
+  VictorSPX motorRight1;
+  TalonSRX motorRight2;
+  VictorSPX motorLeft1;
+  VictorSPX motorLeft2;
   XboxController driverController;
 
   public Robot() {
-    motorRight1 = new VictorSP(0);
-    motorRight2 = new VictorSP(1);
-    motorLeft1 = new VictorSP(2);
-    motorLeft2 = new VictorSP(3);
+    motorRight1 = new VictorSPX(0);
+    motorRight2 = new TalonSRX(1);
+    motorLeft1 = new VictorSPX(2);
+    motorLeft2 = new VictorSPX(3);
     driverController = new XboxController(0);
+  }
+
+  public double getJoystickValuesWithDeadZoneY(){
+    if(driverController.getLeftY() <= 0.1 && driverController.getLeftY() >= -0.1){
+      return 0;
+    } else {
+      return driverController.getLeftY();
+    }
+  }
+
+  public double getJoystickValuesWithDeadZoneX(){
+    if(driverController.getLeftX() <= 0.1 && driverController.getLeftX() >= -0.1){
+      return 0;
+    } else {
+      return driverController.getLeftX();
+    }
   }
 
   @Override
@@ -38,11 +57,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    motorRight2.set(motorRight1.get());
-    motorLeft2.set(motorLeft1.get());
+    motorRight2.set(TalonSRXControlMode.PercentOutput, motorRight1.getMotorOutputVoltage());
+    motorLeft2.set(VictorSPXControlMode.PercentOutput, motorLeft1.getMotorOutputVoltage());
 
-    motorRight1.set(driverController.getLeftY() - driverController.getLeftX());
-    motorLeft1.set(-driverController.getLeftY() - driverController.getLeftX());
+    motorRight1.set(VictorSPXControlMode.PercentOutput, this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
+    motorLeft1.set(VictorSPXControlMode.PercentOutput, -this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
   }
 
   @Override
