@@ -28,18 +28,18 @@ public class Robot extends TimedRobot {
   }
 
   public double getJoystickValuesWithDeadZoneY(){
-    if(driverController.getLeftY() <= 0.1 && driverController.getLeftY() >= -0.1){
+    if(driverController.getLeftY() <= 0.2 && driverController.getLeftY() >= -0.2){
       return 0;
     } else {
-      return driverController.getLeftY();
+      return driverController.getLeftY() * 0.3;
     }
   }
 
   public double getJoystickValuesWithDeadZoneX(){
-    if(driverController.getLeftX() <= 0.1 && driverController.getLeftX() >= -0.1){
+    if(driverController.getRightX() <= 0.2 && driverController.getRightX() >= -0.2){
       return 0;
     } else {
-      return driverController.getLeftX();
+      return driverController.getRightX() * 0.3;
     }
   }
 
@@ -60,8 +60,8 @@ public class Robot extends TimedRobot {
     motorRight2.set(TalonSRXControlMode.PercentOutput, motorRight1.getMotorOutputVoltage());
     motorLeft2.set(VictorSPXControlMode.PercentOutput, motorLeft1.getMotorOutputVoltage());
 
-    motorRight1.set(VictorSPXControlMode.PercentOutput, this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
-    motorLeft1.set(VictorSPXControlMode.PercentOutput, -this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
+    motorRight1.set(VictorSPXControlMode.PercentOutput, -this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
+    motorLeft1.set(VictorSPXControlMode.PercentOutput, this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
   }
 
   @Override
