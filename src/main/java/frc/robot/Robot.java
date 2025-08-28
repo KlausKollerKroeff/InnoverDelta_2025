@@ -14,14 +14,14 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class Robot extends TimedRobot {
   VictorSPX motorRight1;
-  TalonSRX motorRight2;
+  VictorSPX motorRight2;
   VictorSPX motorLeft1;
   VictorSPX motorLeft2;
   XboxController driverController;
 
   public Robot() {
     motorRight1 = new VictorSPX(0);
-    motorRight2 = new TalonSRX(1);
+    motorRight2 = new VictorSPX(1);
     motorLeft1 = new VictorSPX(2);
     motorLeft2 = new VictorSPX(3);
     driverController = new XboxController(0);
@@ -57,7 +57,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    motorRight2.set(TalonSRXControlMode.PercentOutput, motorRight1.getMotorOutputVoltage());
+    motorRight2.set(VictorSPXControlMode.PercentOutput, motorRight1.getMotorOutputVoltage());
     motorLeft2.set(VictorSPXControlMode.PercentOutput, motorLeft1.getMotorOutputVoltage());
 
     motorRight1.set(VictorSPXControlMode.PercentOutput, -this.getJoystickValuesWithDeadZoneY() - this.getJoystickValuesWithDeadZoneX());
